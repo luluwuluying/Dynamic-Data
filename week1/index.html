@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+
+
+<head>
+    <title>Happy Snowman - Create Your Snowman!</title>
+    <link rel="stylesheet" type="text/css" href="layout.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div id="mainForm">
+        <div id="logo"></div>
+
+        <p>Happy Snowman is a survival game. You need to create a snowman with your favorite scene and help he/she to survive in a very cold winter.</p>
+
+        <h3>Let's Create Your Snowman!</h3>
+        <form action="" method="post">
+
+            <label for="snowmanName">Snowman Name:</label>
+            <input type="text" name="snowmanName" id="snowmanName">
+
+            <br>
+            <br>
+
+            <div class="row">
+            <div class="col-md-6 col-sm-6">
+            <label>Gender:</label>
+            <br>
+            <input type="radio" name="gender" value="male" checked id="male">
+            <label for="male">Male</label>
+            <br>
+            <input type="radio" name="gender" value="female" id="female">
+            <label for="female">female</label>
+
+            <br>
+            <input type="radio" name="gender" value="other" id="other">
+            <label for="other">Other</label>
+            </div>
+
+             
+            <div class="col-md-6 col-sm-6">
+            <label for="scene">Scene: </label>
+            <br>
+        
+            <input type="radio" name="place" value="iceworld" checked id="iceworld">
+            <label for="iceworld">Ice world</label>
+            <br>
+            <input type="radio" name="place" value="Christmas" id="Christmas">
+            <label for="Christmas">Christmas Day</label>
+
+            <br>
+            <input type="radio" name="place" value="Disney" id="Disney">
+            <label for="Disney">Disney World</label>
+            </div>
+            </div>
+            
+            <br>
+            
+            <div class="row">
+            <div class="col-md-4 col-sm-12">
+            <label for="color">Favorite hat Color </label>
+
+            <input type="color" name="favcolor" value="#ff5248" id="color">
+            
+            </div>
+            
+            <div class="col-md-4 col-sm-12">
+            <label for="color">Favorite scarf Color </label>
+
+            <input type="color" name="favcolor" value="#ff5248" id="color">       
+            </div>
+            
+            <div class="col-md-4 col-sm-12">
+            <label for="color">Favorite glove Color </label>
+
+            <input type="color" name="favcolor" value="#ff5248" id="color">       
+            </div>
+            
+            </div>
+
+            <br>
+            <br>
+            <label for="range">Age 0-100</label>
+
+            <input type="range" name="points" min="0" max="100" id="range">
+
+            <br>
+            <br>
+            
+            <label for="message">Personal Status</label>
+            <br>
+            <textarea name="message" rows="2s" cols="90" id="message">I love snow ...
+            </textarea>
+
+            <br>
+            <br>
+            
+            <div clas="row">
+            <div class="col-md-12 text-center">  
+
+            <label class="text-center" for="email">Login E-mail:</label>
+            <input class="text-center" type="email" name="email" id="email">
+            </div>
+
+            <br>
+            <br>
+            <div class="col-md-12 text-center">  
+
+            <label class="text-center" for="pass">Login Password:</label>
+            <input class="text-center" type="password" name="pass">
+            </div>
+
+             <br>
+            <br>
+            
+            <div class="col-md-12 text-center">  
+            <input id="but" type="submit" value="Submit">
+            </div>
+            </div>
+            <br>
+            <br>
+        </form>
+    </div>
+</body>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script> 
+</html>
