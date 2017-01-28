@@ -1,0 +1,13 @@
+#box1 {
+    width: 100%;
+    height: 200px;
+    background-color: cornflowerblue;
+    margin-bottom: 10px;
+}
+
+.boxes {
+    width: 100%;
+    height: 200px;
+    background-color: forestgreen;
+    margin-bottom: 10px;
+}
