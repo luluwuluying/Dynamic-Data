@@ -1,0 +1,58 @@
+body{
+    background:url("../images/background.jpg") !important;
+    font-family: 'Handlee', cursive;
+    min-width: 400px;
+    margin-top: 10px;
+    font-size: 20px !important;
+    
+}
+#mainForm {
+    background-color: white;
+    padding: 20px; 
+}
+
+
+#logo {
+    background-image: url("../images/snowman.png");
+    width: 100%;
+    height: 360px;
+    margin: 0 auto;
+}
+
+.sidebar {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+    background-color: #9accff opacity:0.1;
+    color: white;
+}
+
+.column-wrap {
+    overflow: hidden;
+}
+
+#createMonsterHeader{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-horizontal{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+
+#but{
+    -webkit-transition-duration: 0.4s;  Safari 
+    transition-duration: 0.2s;
+    background-color: #9accff;
+    border: #9accff;
+    width: 90px;
+    color: white;
+}
+
+#but:hover {
+    background-color:lightpink; 
+    color: white;
+    
+}
+
