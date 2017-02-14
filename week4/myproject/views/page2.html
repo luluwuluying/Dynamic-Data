@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h3> Snowman played {{message}}.</h3>
+
+        <img src="/images/{{pic}}.jpg" width="390">
+
+
+<!--        <div class="col-md-3">-->
+
+            {{#if nav}}
+            <h3>Snowman felt hungry and want to have some...</h3>
+            {{/if}}
+            <img src="/images/snowman.jpg">
+<!--            </div>-->
+
+    </div>
+    <div class="col-md-3"></div>
+
+</div>
+{{#if nav}}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <nav>
+            {{#list nav}}
+            <a href="{{url}}">{{title}}</a> {{/list}}
+        </nav>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+{{/if}}
