@@ -1,0 +1,28 @@
+body{
+    background:url("../images/background.jpg") !important;
+   font-family: 'Handlee', cursive;
+}
+
+#mainForm{
+    background-color: white;
+    width: 650px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#quarters{
+    width: 100%;
+}
+
+#cars{
+    width: 100%;
+}
+
+
+#logo{
+    background-image: url("../images/snowman.jpg");
+    width: 630px;
+    height: 360px;
+    margin-bottom: 10px;
+}
+
