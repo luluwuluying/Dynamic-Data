@@ -55,7 +55,7 @@ var Snowman = sequelize.define('snowman', {
     },
     message: {
         type: Sequelize.STRING
-    },
+    }
 });
 
 
@@ -118,6 +118,7 @@ server.route({
     }
 });
 
+
 server.route({
     method: 'GET',
     path: '/createDB',
@@ -129,6 +130,18 @@ server.route({
         reply("Database Created")
     }
 });
+
+//server.route({
+//    method: 'GET',
+//    path: '/destroyAll',
+//    handler: function (request, reply) {
+//
+//        Snowman.drop();
+//
+//        reply("destroy all");
+//    }
+//});
+
 
 server.start((err) => {
 

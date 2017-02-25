@@ -1,0 +1,57 @@
+<div id="mainForm">
+    <div id="logo"></div>
+
+    <p>Happy Snowman is a survival game. You need to create a snowman with your favorite scene and help he/she to survive in a very cold winter.</p>
+
+    <h3>Let's Create Your Snowman!</h3>
+    <form action="/update/{{routeId}}" method="POST">
+
+        <label for="snowmanName">Snowman Name:
+            <input type="text" name="snowmanName" id="snowmanName" value="default">
+        </label>
+        <br>
+        <br>
+
+
+        <label for="scenes">Living Scene:
+            <select name="scenes" id="scenes">
+                <option value="iceworld">Ice world</option>
+                <option value="christmas">Christmas Day</option>
+                <option value="forest">Forest</option>
+                <option value="disney">Disney World</option>
+            </select>
+        </label>
+
+        <br>
+        <br>
+
+        <h3>Gender:</h3>
+        <label for="male">
+             <input type="radio" name="gender" value="male" id="male" checked>Male
+        </label>
+        <label for="female">
+            <input type="radio" name="gender" value="female" id="female">Female
+        </label>
+
+        <label for="other">
+            <input type="radio" name="gender" value="other" id="other">Other
+        </label>
+
+        <br>
+        <br>
+
+
+        <label for="message">Leave a message:
+            <br>
+            <textarea name="message" rows="10" cols="30" id="message">I love snow...
+            </textarea>
+        </label>
+
+        <br>
+
+
+        <input type="submit" value="Submit">
+
+    </form>
+</div>
+
