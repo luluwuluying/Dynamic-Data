@@ -1,0 +1,56 @@
+<div id="mainForm">
+    <div id="logo"></div>
+
+    <p>Monster Mash lets you create your monster and its lair.</p>
+
+    <h3>Let's Create Your Monster!</h3>
+    <form action="/formMonster" method="POST">
+
+        <label for="monsterName">Monster Name:
+            <input type="text" name="monsterName" id="monsterName" value="default">
+        </label>
+        <br>
+        <br>
+
+
+        <label for="quarters">Living Quarters:
+            <select name="quarters" id="quarters">
+                <option value="cave">Cave</option>
+                <option value="dungeon">Dungeon</option>
+                <option value="forest">Forest</option>
+                <option value="closet">Closet</option>
+            </select>
+        </label>
+
+        <br>
+        <br>
+
+        <h3>Scare weapon:</h3>
+        <label for="club">Club
+            <input type="radio" name="weapon" value="club" id="club" checked>
+        </label>
+        <label for="other">Claws
+            <input type="radio" name="weapon" value="claws" id="claws">
+        </label>
+
+        <label for="female">Rubber Ducky
+            <input type="radio" name="weapon" value="ducky" id="ducky">
+        </label>
+
+        <br>
+        <br>
+
+
+        <label for="message">Answer Machine Message
+            <br>
+            <textarea name="message" rows="10" cols="30" id="message">I am in the middle of eating...
+            </textarea>
+        </label>
+
+        <br>
+
+
+        <input type="submit" value="Submit">
+
+    </form>
+</div>

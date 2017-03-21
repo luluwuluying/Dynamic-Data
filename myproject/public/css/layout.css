@@ -1,0 +1,11 @@
+a {
+
+}
+nav ul{
+   margin-left: 30px;
+}
+nav li{
+    list-style: none;
+    display: inline-block;
+    margin-right: 50px;
+}

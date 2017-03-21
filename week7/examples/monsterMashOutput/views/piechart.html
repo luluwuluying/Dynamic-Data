@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Chart.js Examples</title>
+
+    <script type="text/javascript" src="js/Chart.bundle.min.js"></script>
+
+    <style>
+
+        #myChart{
+            width: 400px;
+            height: 400px;
+            max-height: 400px;
+            max-width: 400px;
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <script>
+        //var ctx = document.getElementById("myChart");
+
+        var ctx = document.getElementById("myChart").getContext("2d");
+
+        fetch('http://localhost:3000/countColumn/quarters')
+            .then(function (response) {
+                //console.log(response);
+                return response.json();
+            }).then(function (jsonRes) {
+                console.log(jsonRes);
+
+                var keys = [];
+                var values = [];
+                var backgroundColors = [];
+
+                for (var key in jsonRes) {
+                    keys.push(key);
+                    values.push(jsonRes[key]);
+                    var colorString = 'rgba(' + getRandomInt(0, 255) + ',' + getRandomInt(0, 255) + ',' + getRandomInt(0, 255) + ',' + Math.random(0, 1, 1) + ')'
+                    backgroundColors.push(colorString);
+                }
+
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: keys,
+                        datasets: [{
+                            label: 'Where Monsters Live',
+                            data: values,
+                            backgroundColor: backgroundColors
+                        }]
+                    }
+
+                });
+
+
+
+
+
+            });
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+    </script>
+
+</body>
+
+
+
+</html>
