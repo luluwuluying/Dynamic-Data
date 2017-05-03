@@ -8,8 +8,8 @@ const Path = require('path');
 const Handlebars = require('handlebars');
 const fs = require("fs");
 const Sequelize = require('sequelize');
-const Fetch = require("node-fetch");
 const FormData = require("form-data");
+const pg = require('pg');
 
 const server = new Hapi.Server({
     connections: {
@@ -21,27 +21,38 @@ const server = new Hapi.Server({
     }
 });
 
+var sequelize;
+
+
 server.connection({
-    host:"localhost",
-    port: 3000
+    port: (process.env.PORT || 3000)
 });
 
 
-var sequelize = new Sequelize('db', 'username', 'password', {
-    host: 'localhost',
-    dialect: 'sqlite',
+if (process.env.DATABASE_URL) {
+    // the application is executed on Heroku ... use the postgres database
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        logging: true //false
+    })
+} else {
+    sequelize = new Sequelize('db', 'username', 'password', {
+        host: 'localhost',
+        dialect: 'sqlite',
 
-    pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
-    },
+        pool: {
+            max: 5,
+            min: 0,
+            idle: 10000
+        },
 
-    // SQLite only
-    storage: 'db.sqlite'
-});
+        // SQLite only
+        storage: 'db.sqlite'
+    });
+}
 
-
+   
 var Trip = sequelize.define('trip', {
     tripName: {
         type: Sequelize.STRING

@@ -1,10 +1,10 @@
 {
-  "name": "basicproject",
+  "name": "finalproject",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,5 +19,9 @@
     "sequelize": "^3.30.2",
     "sqlite3": "^3.1.8",
     "vision": "^4.1.1"
-  }
+  },
+    "repository":{
+        "type":"git",
+        "url":"https://github.com/luluwuluying/DynamicData-Final"
+    }
 }

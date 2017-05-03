@@ -1,15 +1,67 @@
 <div id="mainRes">
     <div id="createNewTrips">
-        <img src="/images/{{formresponse.destination}}.jpg" width="500">
-<!--        <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyA1xOIznkSi_MVvl1ktOreqbsZzB0_PW8g" width="500">-->
-        <h2>Welcome to {{formresponse.destination}}</h2>
-        <h3>{{formresponse.tripName}} </h3>
-        <p>One day itinerary</p>
-        <div id="box">{{formresponse.restaurant1}}</div>
-        <div id="box">{{formresponse.restaurant2}}</div>
-        <div id="box">{{formresponse.park1}}</div>
-        <div id="box">{{formresponse.park2}}</div>
-        <div id="box"></div>
-        <div id="box"></div>
+        <h2>{{formresponse.tripName}}</h2>
+        <h2>{{formresponse.destination}} One Day Itinerary</h2>
+        <div class="card">
+            <div class="container">
+                <p><b>8:00 am - 10:00 am</b></p>
+                <p>{{formresponse.random1.name}}</p>
+                <p> Rating :{{formresponse.random1.rating}}</p>
+                <p>{{formresponse.random1.address}}</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="card">
+            <div class="container">
+                <p><b>10:00 am - 12:00 am</b></p>
+                <p>{{formresponse.random2.name}}</p>
+                <p> Rating :{{formresponse.random2.rating}}</p>
+                <p>{{formresponse.random2.address}}</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="card">
+            <div class="container">
+                <p><b>12:00 am - 14:00 pm</b></p>
+                <p>{{formresponse.restaurant1.name}}</p>
+                <p> Rating :{{formresponse.restaurant1.rating}}</p>
+                <p>{{formresponse.restaurant1.address}}</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="card">
+            <div class="container">
+                <p><b>14:00 pm - 16:00 pm</b></p>
+                <p>{{formresponse.random3.name}}</p>
+                <p> Rating :{{formresponse.random3.rating}}</p>
+                <p>{{formresponse.random3.address}}</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="card">
+            <div class="container">
+                <p><b>16:00 pm - 18:00 pm</b></p>
+                <p>{{formresponse.random4.name}}</p>
+                <p> Rating :{{formresponse.random4.rating}}</p>
+                <p>{{formresponse.random4.address}}</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="card">
+            <div class="container">
+                <p><b>18:00 pm - 20:00 pm</b></p>
+                <p>{{formresponse.restaurant2.name}}</p>
+                <p> Rating :{{formresponse.restaurant2.rating}}</p>
+                <p>{{formresponse.restaurant2.address}}</p>
+            </div>
+        </div>
+        <br>
+        <br>
+
     </div>
 </div>

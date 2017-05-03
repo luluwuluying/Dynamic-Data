@@ -10,6 +10,7 @@ const fs = require("fs");
 const Sequelize = require('sequelize');
 const Fetch = require("node-fetch");
 const FormData = require("form-data");
+//const pg = require("pg");
 
 var PlaceAutocomplete = require("./lib/PlaceAutocomplete.js");
 var googleplaces = require('googleplaces');
@@ -31,25 +32,38 @@ const server = new Hapi.Server({
     }
 });
 
+var sequelize;
+
+
 server.connection({
-    host: "localhost",
-    port: 3000
+    port: (process.env.PORT || 3000)
 });
 
 
-var sequelize = new Sequelize('db', 'username', 'password', {
-    host: 'localhost',
-    dialect: 'sqlite',
+if (process.env.DATABASE_URL) {
+    // the application is executed on Heroku ... use the postgres database
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        logging: true //false
+    })
+} else {
+    sequelize = new Sequelize('db', 'username', 'password', {
+        host: 'localhost',
+        dialect: 'sqlite',
 
-    pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
-    },
+        pool: {
+            max: 5,
+            min: 0,
+            idle: 10000
+        },
 
-    // SQLite only
-    storage: 'db.sqlite'
-});
+        // SQLite only
+        storage: 'db.sqlite'
+    });
+}
+
+   
 
 
 var Trip = sequelize.define('trip', {
@@ -59,11 +73,23 @@ var Trip = sequelize.define('trip', {
     destination: {
         type: Sequelize.STRING
     },
-    startdate: {
-        type: Sequelize.DATEONLY
+    restaurant1: {
+        type: Sequelize.STRING
     },
-    enddate: {
-        type: Sequelize.DATEONLY
+    restaurant2: {
+        type: Sequelize.STRING
+    },
+    random1: {
+        type: Sequelize.STRING
+    },
+    random2: {
+        type: Sequelize.STRING
+    },
+    random3: {
+        type: Sequelize.STRING
+    },
+    random4: {
+        type: Sequelize.STRING
     },
 });
 
@@ -87,7 +113,7 @@ server.route({
     path: '/',
     handler: {
         view: {
-            template: 'index'
+            template: 'createTrip'
         }
     }
 });
@@ -170,36 +196,25 @@ server.route({
     handler: function (request, reply) {
         var formresponse = JSON.stringify(request.payload);
         var parsing = JSON.parse(formresponse);
-        //var days=Days.daysBetween(startdate, enddate).getDays();
 
-        //console.log(parsing);
-
-        var d1 = new Date(parsing.startdate);
-        var d2 = new Date(parsing.enddate);
-
-        //        //Get 1 day in milliseconds
-        var one_day = 1000 * 60 * 60 * 24;
-        //
-        //        // Convert both dates to milliseconds
-        var date1_ms = d1.getTime();
-        var date2_ms = d2.getTime();
-        //
-        //        // Calculate the difference in milliseconds
-        var difference_ms = date2_ms - date1_ms;
-        //
-        //        // Convert back to days and return
-        var days = Math.ceil(difference_ms / one_day);
-
-        console.log("Number of days: " + days);
-        //        
-        // parsing["days"] = days;
-
-        /*--------------------------------------------------------------------------------------------*/
+        /*-----------------------------------------------------------------------------------*/
 
         //google place api
 
         var destination = request.payload.destination;
-        var search = "point_of_interest in " + destination;
+        var tripName = request.payload.tripName;
+        var restaurant1 = [];
+        var restaurant2 = [];
+        var random1 = [];
+        var random2 = [];
+        var random3 = [];
+        var random4 = [];
+
+        var queryList = ["museum", "park", "church"];
+
+        var prevQueryNum = 0;
+
+        var currentTrip = {};
 
         googlePlaces.textSearch({
             query: destination
@@ -208,102 +223,205 @@ server.route({
             if (response) {
                 //console.log("place: "+JSON.stringify(response.results[0].geometry.location) + '\n');
                 //console.log('res=' + JSON.stringify(response));
+                
+                currentTrip["destination"] = destination;
+                currentTrip["tripName"] = tripName;
+
                 var loc = [response.results[0].geometry.location.lat, response.results[0].geometry.location.lng];
 
 
                 var parameters = {
-                    query: search,
+                    query: "",
                     location: loc,
-                    radius: 50000
+                    radius: 500
 
                 };
-                var results = [];
+                //var results = [];
+
+                //search restaurant 1 and 2
+
+                parameters["query"] = "restaurant";
+
                 googlePlaces.textSearch(parameters, function (error, response) {
 
                     if (response) {
-                        //                        results = response.results.slice(0, 7);
 
-                        parameters.query = "restuarant";
+                        var randChoice = parseInt(Math.floor((Math.random() * response.results.length) + 1));
+
+                        if (randChoice < 1) {
+                            randChoice = 2;
+                        }
+                        var results = [];
+                        results = results.concat(response.results.slice(randChoice - 2, randChoice));
+
+                        restaurant1 = {
+                            name: results[0].name,
+                            address: results[0].formatted_address,
+                            rating: results[0].rating,
+                        }
+
+                        restaurant2 = {
+                            name: results[1].name,
+                            address: results[1].formatted_address,
+                            rating: results[1].rating,
+                        }
+
+                        //                        console.log(restaurant1);
+                        //                        console.log(restaurant2);
+
+                        currentTrip["restaurant1"] = restaurant1;
+                        currentTrip["restaurant2"] = restaurant2;
+
+                        //search random1
+
+                        var randomQueryList = parseInt(Math.floor((Math.random() * queryList.length)));
+
+                        prevQueryNum = randomQueryList;
+
+                        parameters["query"] = queryList[randomQueryList];
+                        console.log(queryList[randomQueryList]);
+
                         googlePlaces.textSearch(parameters, function (error, response) {
 
                             if (response) {
-                                results = results.concat(response.results.slice(0, 2));
 
-                                results.forEach(function (d) {
+                                //                       console.log(response.results.length);
+                                var randChoice = parseInt(Math.floor((Math.random() * response.results.length)));
+                                console.log(randChoice);
 
-                                    var restaurant1 = {
-                                        name: response.results[0].name,
-                                        address: response.results[0].formatted_address,
-                                        rating: response.results[0].rating,
-                                        photo: "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + d.photos[0].photo_reference + '&key=' + config.apiKey
+                                var results1 = [];
+                                results1 = results1.concat(response.results.slice(randChoice - 1, randChoice));
+                                //console.log(results[0]);
+
+                                random1 = {
+                                    name: results1[0].name,
+                                    address: results1[0].formatted_address,
+                                    rating: results1[0].rating,
+                                }
+
+                                //                        console.log(random1);
+
+                                currentTrip["random1"] = random1;
+
+                                //search random2
+
+                                while (randomQueryList == prevQueryNum) {
+                                    randomQueryList = parseInt(Math.floor((Math.random() * queryList.length) + 1));
+                                }
+
+                                prevQueryNum = randomQueryList;
+
+                                parameters["query"] = queryList[randomQueryList];
+                                console.log(queryList[randomQueryList]);
+
+                                googlePlaces.textSearch(parameters, function (error, response) {
+
+                                    if (response) {
+
+                                        var randChoice = parseInt(Math.floor((Math.random() * response.results.length)));
+                                        console.log(randChoice);
+
+                                        var results2 = [];
+                                        results2 = results2.concat(response.results.slice(randChoice - 1, randChoice));
+
+                                        random2 = {
+                                                name: results2[0].name,
+                                                address: results2[0].formatted_address,
+                                                rating: results2[0].rating,
+                                            }
+                                            //                         console.log(random2);
+
+                                        currentTrip["random2"] = random2;
+
+
+                                        //search random3
+                                        while (randomQueryList == prevQueryNum) {
+                                            randomQueryList = parseInt(Math.floor((Math.random() * queryList.length)));
+                                        }
+
+                                        prevQueryNum = randomQueryList;
+
+                                        parameters["query"] = queryList[randomQueryList];
+                                        console.log(queryList[randomQueryList]);
+
+                                        googlePlaces.textSearch(parameters, function (error, response) {
+
+                                            if (response) {
+
+                                                var randChoice = parseInt(Math.floor((Math.random() * response.results.length)));
+                                                console.log(randChoice);
+
+                                                var results3 = [];
+                                                results3 = results3.concat(response.results.slice(randChoice - 1, randChoice));
+
+                                                random3 = {
+                                                        name: results3[0].name,
+                                                        address: results3[0].formatted_address,
+                                                        rating: results3[0].rating,
+                                                    }
+                                                    //                         console.log(random2);
+
+                                                currentTrip["random3"] = random3;
+
+
+                                                //search random4
+                                                while (randomQueryList == prevQueryNum) {
+                                                    randomQueryList = parseInt(Math.floor((Math.random() * queryList.length) + 1));
+                                                }
+
+                                                prevQueryNum = randomQueryList;
+
+                                                parameters["query"] = queryList[randomQueryList];
+                                                console.log(queryList[randomQueryList]);
+
+                                                googlePlaces.textSearch(parameters, function (error, response) {
+
+                                                    if (response) {
+
+                                                        var randChoice = parseInt(Math.floor((Math.random() * response.results.length)));
+                                                        console.log(randChoice);
+
+                                                        var results4 = [];
+                                                        results4 = results4.concat(response.results.slice(randChoice - 1, randChoice));
+
+                                                        random4 = {
+                                                                name: results4[0].name,
+                                                                address: results4[0].formatted_address,
+                                                                rating: results4[0].rating,
+                                                            }
+                                                            //                         console.log(random2);
+
+                                                        currentTrip["random4"] = random4;
+
+                                                        console.log(currentTrip);
+
+                                                        reply.view('formresponse', {
+                                                            formresponse: currentTrip
+                                                        });
+
+
+                                                    }
+
+                                                });
+
+                                            }
+
+                                        });
+
                                     }
 
-                                    var restaurant2 = {
-                                        name: response.results[1].name,
-                                        address: response.results[1].formatted_address,
-                                        rating: response.results[1].rating,
-                                        photo: "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + d.photos[1].photo_reference + '&key=' + config.apiKey
-                                    }
-
-                                    //                                    console.log(d.name + '\n');
-                                    //                                    console.log(d.formatted_address + '\n');
-                                    //                                    console.log(d.rating + '\n'); console.log("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + d.photos[0].photo_reference + '&key=' + config.apiKey);
                                 });
+
                             }
                         });
 
-                        parameters.query = "park";
-                        googlePlaces.textSearch(parameters, function (error, response) {
 
-                            if (response) {
-                                results = results.concat(response.results.slice(0, 2));
-
-                                results.forEach(function (info) {
-                                    
-                                    var park1 = {
-                                        name: response.results[0].name,
-                                        address: response.results[0].formatted_address,
-                                        rating: response.results[0].rating,
-                                        photo: "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + d.photos[0].photo_reference + '&key=' + config.apiKey
-                                    }
-
-                                    var park2 = {
-                                        name: response.results[1].name,
-                                        address: response.results[1].formatted_address,
-                                        rating: response.results[1].rating,
-                                        photo: "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + d.photos[1].photo_reference + '&key=' + config.apiKey
-                                    }
-                                    //                                    console.log(info.name + '\n');
-                                    //                                    console.log(info.formatted_address + '\n');
-                                    //                                    console.log(info.rating + '\n'); console.log("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + info.photos[0].photo_reference + '&key=' + config.apiKey);
-                                });
-                            }
-                        });
                     }
                 });
             }
         });
-
-
-        //end google place api
-
-
-        Trip.create(parsing).then(function (currentTrip) {
-            Trip.sync();
-            console.log("...syncing");
-            console.log(currentTrip);
-            return (currentTrip);
-        }).then(function (currentTrip) {
-            currentTrip["days"] = days;
-            currentTrip["restaurant1"] = restaurant1;
-            currentTrip["restaurant2"] = restaurant2;
-            currentTrip["park2"] = park2;
-            currentTrip["park1"] = park1;
-            reply.view('formresponse', {
-                formresponse: currentTrip
-            });
-        });
     }
+
 });
 
 //findAll returns an array of users, Uses helper to loop through array
@@ -358,48 +476,3 @@ server.start((err) => {
     console.log(`Server running at: ${server.info.uri}`);
 
 });
-
-
-
-
-
-
-
-
-
-//var a = {
-//    "formatted_address": "Seaview Commercial Building, 21-24 Connaught Rd W, Hong Kong",
-//    "geometry": {
-//        "location": {
-//            "lat": 22.28777729999999,
-//            "lng": 114.1491572
-//        },
-//        "viewport": {
-//            "northeast": {
-//                "lat": 22.2891262802915,
-//                "lng": 114.1505061802915
-//            },
-//            "southwest": {
-//                "lat": 22.28642831970849,
-//                "lng": 114.1478082197085
-//            }
-//        }
-//    },
-//    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
-//    "id": "ff8d6936781a6b7106d7d6bcbf234ebd9677a16b",
-//    "name": "Fung Shing Restaurant",
-//    "opening_hours": {
-//        "open_now": false,
-//        "weekday_text": []
-//    },
-//    "photos": [{
-//        "height": 2448,
-//        "html_attributions": ["<a href=\"https://maps.google.com/maps/contrib/102111242712363729138/photos\">Charles Chau</a>"],
-//        "photo_reference": "CoQBdwAAAPGmLn_IiCdze2DyotCQl6LGRNEJAu-V5Sly_VvJ_kCXEuqTs6GtF8S2RzRUZJhR_IaympWXbK3kq1duP7JY_RqOIBqGQVoGNaU2go8R7P-w1HlqLkM-yuh5LNaOAAMbEMydy5QYSGwleHgCwz_oF2iYoXQHdHekWYFaHw7alse8EhAXZkrD0mG05T2Ms68JXAC_GhQvH1G3FwtPw2qXe1eD-2JB9Y5F8w",
-//        "width": 3264
-//            }],
-//    "place_id": "ChIJp4Bk1n0ABDQRZmMHq1rwIOQ",
-//    "rating": 3.1,
-//    "reference": "CmRSAAAAAbRruYrkpj7h4RE-oddjOgQEJk0rTKQ2G5tbvddicG-ouNTNWt4quLR3ATR5ObYsNFaccXv-MTFevQ53VjfvcvziVvEhLP_dyL8Xx6Hb93zvtm71eDvyOqdisSGECylbEhDtYYGRYOoIdVbgQJQ_vZdbGhQvFvpZaYDQ75ztGJOXBlZsSwHQLQ",
-//    "types": ["restaurant", "food", "point_of_interest", "establishment"]
-//}
