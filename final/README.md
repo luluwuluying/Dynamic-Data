@@ -1,6 +1,7 @@
 ## Documentation
 ### What is it?
 #### Travel Life is an itinerary website that provides one day itinerary for each destination. You can simply type in a random destination and get a perfect one day itinerary. Inside of each itinerary, the system will returns 4 places to have fun and 2 restaurants for meal.
+#### Here is the link to my project on Heroku : https://finalprojectdd.herokuapp.com/
 
 <img width="1431" alt="background" src="https://cloud.githubusercontent.com/assets/13953337/25626355/4c3c876e-2f2d-11e7-95ac-a0a0653581dd.png">
 
