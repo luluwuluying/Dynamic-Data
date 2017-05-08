@@ -15,7 +15,7 @@
 
 
 ### My code
-#### Since google place api doesn't have a specific place type called attractions or things to do, so I have to query those places by different place type, I am using restaurant, park ,church and mesume for my project. First I created a variable for location based on the input from user and then searching the places within the range of that location.
+#### Since google place api doesn't have a specific place type called attractions or things to do, so I have to query those places by different place type, I am using restaurant, park ,church and mesume for my project. First I created a variable for location based on the input from user and then searching the places within the range of that location. And then based on the query, I grap the name, address, rating of each location to my one day itinerary for user. 
 
 
 
